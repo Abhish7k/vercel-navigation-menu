@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode, useState } from "react";
+import { FiChevronDown } from "react-icons/fi";
 
 export const DropDown = () => {
   return (
@@ -15,7 +16,7 @@ export const DropDown = () => {
 };
 
 const Tabs = () => {
-  const [selected, setSelected] = useState<number | null>(null);
+  const [selected, setSelected] = useState<number | null>(1);
   const [dir, setDir] = useState<null | "l" | "r">(null);
 
   const handleSetSelected = (val: number | null) => {
@@ -61,8 +62,23 @@ const Tab = ({
   selected: number | null;
 }) => {
   return (
-    <button>
+    <button
+      id={`shift-tab-${tab}`}
+      onMouseEnter={() => handleSetSelected(tab)}
+      onClick={() => handleSetSelected(tab)}
+      className={`flex items-center gap-1 rounded-full px-3 py-1.5 text-sm transition-colors ${
+        selected === tab
+          ? " bg-neutral-800 text-neutral-100"
+          : "text-neutral-400"
+      }
+      `}
+    >
       <span>{children}</span>
+      <FiChevronDown
+        className={`transition-transform ${
+          selected === tab ? "rotate-180" : ""
+        }`}
+      />
     </button>
   );
 };
