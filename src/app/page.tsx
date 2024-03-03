@@ -1,5 +1,9 @@
-import Image from "next/image";
+import { DropDown } from "@/components/DropDown";
 
 export default function Home() {
-  return <main></main>;
+  return (
+    <main>
+      <DropDown />
+    </main>
+  );
 }
