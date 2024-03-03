@@ -2,6 +2,7 @@
 
 import { ReactNode, useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
+import { AnimatePresence, easeIn, motion } from "framer-motion";
 
 export const DropDown = () => {
   return (
@@ -16,7 +17,7 @@ export const DropDown = () => {
 };
 
 const Tabs = () => {
-  const [selected, setSelected] = useState<number | null>(1);
+  const [selected, setSelected] = useState<number | null>(null);
   const [dir, setDir] = useState<null | "l" | "r">(null);
 
   const handleSetSelected = (val: number | null) => {
@@ -25,6 +26,8 @@ const Tabs = () => {
     } else if (val === null) {
       setDir(null);
     }
+
+    setSelected(val);
   };
 
   return (
@@ -45,7 +48,10 @@ const Tabs = () => {
           </Tab>
         );
       })}
-      {/* Render our content */}
+
+      <AnimatePresence>
+        {selected && <Content dir={dir} selected={selected} />}
+      </AnimatePresence>
     </div>
   );
 };
@@ -81,6 +87,39 @@ const Tab = ({
       />
     </button>
   );
+};
+
+const Content = ({
+  selected,
+  dir,
+}: {
+  selected: number | null;
+  dir: null | "l" | "r";
+}) => {
+  return (
+    <motion.div
+      id="overlay-content"
+      initial={{
+        opacity: 0,
+        y: 10,
+      }}
+      animate={{
+        opacity: 1,
+        y: 0,
+      }}
+      exit={{
+        opacity: 0,
+        y: 10,
+      }}
+      className="absolute left-0 top-[calc(100%_+_24px)] w-96 rounded-lg border border-neutral-600 bg-gradient-to-b from-neutral-900 via-neutral-900 to-neutral-800 p-4"
+    >
+      <Bridge />
+    </motion.div>
+  );
+};
+
+const Bridge = () => {
+  return <div className="absolute -top-[24px] left-0 right-0 h-[24px]" />;
 };
 
 const ExampleComponent = () => {
